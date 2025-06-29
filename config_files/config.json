@@ -1,0 +1,62 @@
+{
+    "name": "CGCNN",
+    "n_gpu": 1,
+    "gpu_id": 0,
+
+    "arch": {
+        "type": "CrystalGraphConvNet",
+        "args": {
+            "orig_atom_fea_len" : 92,
+            "nbr_fea_len" : 41,
+            "classification" : false
+        }
+    },
+    "data_loader": {
+        "type": "GraphDataLoader",
+        "args":{
+            "data_dir": "./data/mp_2024/cif",
+            "load_from_local" : false,
+            "local_path": null,
+            "batch_size": 128,
+            "shuffle": false,
+            "test_split": 0.2,
+            "validation_split": 0.25,
+            "random_seed": 123,
+            "num_workers": 0,
+            "data_split_file": null
+
+        }
+    },
+    "optimizer": {
+        "type": "Adam",
+        "args":{
+            "lr": 0.001,
+            "weight_decay": 0,
+            "amsgrad": true
+        }
+    },
+    "loss": "mse_loss",
+    "metrics": [
+        "mae", "rmse"
+    ],
+    "lr_scheduler": {
+        "type": "StepLR",
+        "args": {
+            "step_size": 50,
+            "gamma": 0.1
+        }
+    },
+    "trainer": {
+        "epochs": 4000,
+
+        "save_dir": "saved/",
+        "save_period": 1,
+        "verbosity": 2,
+        
+        "monitor": "min val_loss",
+        "early_stop": 500,
+
+        "tensorboard": true
+    },
+    "model_type" : "Graph"
+}
